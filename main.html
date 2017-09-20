@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="container" ng-controller="bookCtrl">
+    <a href="#shoppingCar">
+        <div class="panel panel-default shoppingCar">
+            我的购物车<span class="badge carInfo_count">{{totalCount}}</span>
+        </div>
+    </a>
+    <ul class="row" style="clear: both;">
+        <li class="col-lg-3 col-md-3 col-sm-6 col-xs-12 bookContainer" ng-repeat="book in bookList">
+            <div class="bookInfo">
+                <img ng-src="{{book.imgPath}}"/>
+                <div>
+                    <p>{{book.price|currency:"￥"}}</p>
+                    <p>{{book.bookDesc}}</p>
+                    <p>已有<span>{{book.commandCount}}+</span>人评价</p>
+                    <div>
+                        <span>关注</span>
+                        <span ng-click="addToCar(book)">加入购物车</span>
+                        <span>电子书</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app="bookApp" ng-init="shoppingcarList=[];totalCount=0;totalPrice=0">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/indx.css"/>
+    <title>商城首页</title>
+    <script src="./lib/jquery/jquery-1.12.2.js"></script>
+    <script src="./lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./lib/angular/angular.min.js"></script>
+    <script src="./lib/angular/angular-route.min.js"></script>
+</head>
+<body>
+
+    <div ng-view>
+
+    </div>
+
+</body>
+<script>
+    var app = angular.module("bookApp",["ngRoute"]);
+    app.config(["$routeProvider",function($routeProvider){
+        $routeProvider.when("/",{templateUrl:"main.html"})
+                .when("/shoppingCar",{templateUrl:"shoppingCar.html"})
+                .otherwise({redirectTo:"/"});
+    }]);
+    app.controller("bookCtrl",["$scope","$http","$rootScope", function ($scope,$http,$rootScope) {
+            $http({
+                method:"get",
+                url:"./js/book.json"
+            }).then(function success(res) {
+                $scope.bookList = res.data.rows;
+            });
+            $scope.addToCar = function (book) {
+                var index = $rootScope.shoppingcarList.indexOf(book);
+                if(index ==-1){
+                    book.count = 1;
+                    $rootScope.shoppingcarList.push(book);
+                }else{
+                    $rootScope.shoppingcarList[index].count++;
+                }
+                var tcp = countTotal($rootScope.shoppingcarList);
+                $rootScope.totalCount = tcp.tc;
+                $rootScope.totalPrice = tcp.tp;
+            }
+    }]);
+
+    app.controller("shoppingCarCtrl",["$scope","$rootScope", function ($scope,$rootScope) {
+        $scope.carBookList = $rootScope.shoppingcarList;
+//        for(var i = 0 ; i < $rootScope.shoppingcarList.length; i++){
+//            $rootScope.shoppingcarList[i].count = 1;
+//        }
+    }]);
+
+    function countTotal(bookList){
+        var tc = 0
+        var tp = 0;
+        for(var i = 0; i < bookList.length; i++){
+            var temp = bookList[i];
+            tc+=temp.count;
+            tp+=temp.price*temp.count;
+        }
+        return {
+            "tc":tc,
+            "tp":tp
+        };
+    }
+
+</script>
+</html>

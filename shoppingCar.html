@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <table class="table table-striped table-hover" ng-controller="shoppingCarCtrl">
+        <tr>
+            <th>
+                <input type="checkbox"/>全选
+            </th>
+            <th>
+                商品
+            </th>
+            <th>
+                单价
+            </th>
+            <th>
+                数量
+            </th>
+            <th>
+                小计
+            </th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="book in carBookList ">
+            <td>
+                <input type="checkbox"/>1
+            </td>
+            <td>{{book.bookName}}</td>
+            <td>{{book.price|currency:"￥"}}</td>
+            <td>{{book.count}}</td>
+            <td>{{book.price*book.count|currency:"￥"}}</td>
+            <td>删除</td>
+        </tr>
+        <tr>
+            <td colspan="5">总价</td>
+            <td>{{totalPrice|currency:"￥"}}</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
